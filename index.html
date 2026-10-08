@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denuncia Verde — Jaboatão dos Guararapes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#ffffff;
+    --bg-soft:#fbfaf6;
+    --ink:#1c2128;
+    --ink-soft:#5b6470;
+    --yolk:#f7b500;
+    --yolk-deep:#e0a300;
+    --blue:#0f3d73;
+    --blue-deep:#0a2c54;
+    --blue-mid:#1f5fa3;
+    --line:#e7e4da;
+    --radius-lg:28px;
+    --radius-md:18px;
+    --radius-sm:12px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  h1,h2,h3,.brand{
+    font-family:'Sora', sans-serif;
+  }
+
+  a{color:inherit; text-decoration:none;}
+
+  img{max-width:100%; display:block;}
+
+  .wrap{
+    max-width:1120px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- Glassmorphism buttons ---------- */
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    padding:15px 30px;
+    border-radius:100px;
+    font-family:'Sora', sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.2px;
+    cursor:pointer;
+    border:1px solid rgba(255,255,255,0.5);
+    background:rgba(255,255,255,0.22);
+    backdrop-filter:blur(16px) saturate(160%);
+    -webkit-backdrop-filter:blur(16px) saturate(160%);
+    box-shadow:0 8px 24px rgba(10,30,60,0.18), inset 0 1px 0 rgba(255,255,255,0.4);
+    color:var(--white);
+    transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+  .btn:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,0.32);
+    box-shadow:0 12px 30px rgba(10,30,60,0.24), inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .btn:active{transform:translateY(0);}
+
+  .btn-solid{
+    background:rgba(247,181,0,0.9);
+    border:1px solid rgba(255,255,255,0.6);
+    color:var(--blue-deep);
+    box-shadow:0 8px 24px rgba(224,163,0,0.35), inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .btn-solid:hover{background:rgba(247,181,0,1);}
+
+  .btn-ghost{
+    background:rgba(15,61,115,0.06);
+    border:1px solid rgba(15,61,115,0.16);
+    color:var(--blue);
+    box-shadow:none;
+    backdrop-filter:blur(8px);
+  }
+  .btn-ghost:hover{background:rgba(15,61,115,0.1);}
+
+  .btn-block{width:100%;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,0.82);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 0;
+  }
+  .nav-left{display:flex; align-items:center; gap:14px;}
+  .nav-left img{height:34px; width:auto;}
+  .nav-divider{width:1px; height:26px; background:var(--line);}
+  .brand{font-size:16px; font-weight:700; color:var(--blue-deep); line-height:1.15;}
+  .brand span{display:block; font-family:'Inter'; font-weight:500; font-size:11.5px; color:var(--ink-soft); letter-spacing:.3px;}
+
+  .nav-links{display:flex; align-items:center; gap:34px;}
+  .nav-links a{font-size:14.5px; font-weight:500; color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--blue);}
+
+  .nav-cta{display:flex; align-items:center; gap:10px;}
+  .emergency{
+    font-size:13px; font-weight:600; color:var(--blue-deep);
+    background:#fff3d6; border:1px solid #f3d78a;
+    padding:8px 14px; border-radius:100px;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(160deg, var(--blue-deep) 0%, var(--blue) 45%, var(--blue-mid) 75%, var(--yolk) 165%);
+    padding:88px 0 110px;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 85% 18%, rgba(247,181,0,0.35), transparent 45%),
+      radial-gradient(circle at 8% 92%, rgba(247,181,0,0.18), transparent 40%);
+    pointer-events:none;
+  }
+  .hero-grid{
+    position:relative;
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:56px;
+    align-items:center;
+  }
+  .eyebrow-pill{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.28);
+    backdrop-filter:blur(10px);
+    padding:8px 16px 8px 12px;
+    border-radius:100px;
+    font-size:13px; font-weight:500;
+    color:#ffe9ad;
+    margin-bottom:26px;
+  }
+  .eyebrow-pill .dot{width:7px; height:7px; border-radius:50%; background:var(--yolk); box-shadow:0 0 0 4px rgba(247,181,0,0.25);}
+
+  .hero h1{
+    font-size:44px;
+    line-height:1.14;
+    font-weight:800;
+    color:var(--white);
+    letter-spacing:-0.5px;
+    max-width:540px;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--yolk);
+  }
+  .hero p{
+    margin-top:20px;
+    font-size:16.5px;
+    color:rgba(255,255,255,0.82);
+    max-width:460px;
+  }
+  .hero-actions{display:flex; gap:14px; margin-top:36px; flex-wrap:wrap;}
+
+  .hero-stats{
+    display:flex; gap:28px; margin-top:52px; flex-wrap:wrap;
+  }
+  .hero-stats div{color:var(--white);}
+  .hero-stats strong{display:block; font-size:24px; font-family:'Sora'; font-weight:700;}
+  .hero-stats span{font-size:12.5px; color:rgba(255,255,255,0.7);}
+
+  /* Hero visual: glass "report card" mock */
+  .hero-visual{position:relative;}
+  .glass-card{
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3);
+    backdrop-filter:blur(20px) saturate(160%);
+    -webkit-backdrop-filter:blur(20px) saturate(160%);
+    border-radius:var(--radius-lg);
+    padding:26px;
+    box-shadow:0 30px 60px rgba(6,20,40,0.35), inset 0 1px 0 rgba(255,255,255,0.35);
+  }
+  .glass-card-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px;}
+  .glass-card-head span{font-size:12.5px; font-weight:600; color:#ffe9ad; letter-spacing:.3px;}
+  .status-chip{
+    font-size:11.5px; font-weight:600; color:var(--blue-deep);
+    background:var(--yolk); padding:4px 11px; border-radius:100px;
+  }
+  .mock-map{
+    height:150px; border-radius:var(--radius-md);
+    background:
+      radial-gradient(circle at 30% 30%, rgba(247,181,0,0.35), transparent 55%),
+      linear-gradient(135deg,#173f6e,#0d2c53);
+    position:relative; overflow:hidden;
+    margin-bottom:18px;
+  }
+  .mock-map::after{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size:24px 24px;
+  }
+  .pin{
+    position:absolute; top:52%; left:46%;
+    width:16px; height:16px; border-radius:50% 50% 50% 0;
+    background:var(--yolk); transform:rotate(-45deg);
+    box-shadow:0 0 0 6px rgba(247,181,0,0.25);
+  }
+  .glass-line{height:11px; border-radius:6px; background:rgba(255,255,255,0.22); margin-bottom:10px;}
+  .glass-line.w60{width:60%;}
+  .glass-line.w80{width:80%;}
+  .glass-line.w40{width:40%;}
+
+  /* ---------- Section shell ---------- */
+  section{padding:90px 0;}
+  .section-tag{
+    font-size:13px; font-weight:600; color:var(--blue-mid);
+    margin-bottom:12px;
+  }
+  .section-head{max-width:600px; margin-bottom:52px;}
+  .section-head h2{font-size:32px; font-weight:700; letter-spacing:-0.4px; line-height:1.22;}
+  .section-head p{margin-top:14px; color:var(--ink-soft); font-size:15.5px; max-width:520px;}
+
+  /* ---------- Video section ---------- */
+  .video-section{background:var(--white);}
+  .video-frame{
+    position:relative;
+    width:100%;
+    padding-top:56.25%; /* 16:9 */
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    background:var(--blue-deep);
+    box-shadow:0 20px 50px rgba(10,30,60,0.18);
+    border:1px solid var(--line);
+  }
+  .video-frame iframe{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    border:0;
+  }
+
+  /* ---------- Steps (Como funciona) ---------- */
+  .steps{background:var(--bg-soft);}
+  .steps-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
+  .step-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:30px 26px;
+    position:relative;
+  }
+  .step-num{
+    width:38px; height:38px; border-radius:10px;
+    background:var(--blue-deep); color:var(--white);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Sora'; font-weight:700; font-size:15px;
+    margin-bottom:20px;
+  }
+  .step-card:nth-child(2) .step-num{background:var(--yolk-deep);}
+  .step-card:nth-child(3) .step-num{background:var(--blue-mid);}
+  .step-card h3{font-size:17px; font-weight:700; margin-bottom:8px;}
+  .step-card p{font-size:14.5px; color:var(--ink-soft);}
+
+  /* ---------- Report form ---------- */
+  .report{
+    background:var(--white);
+  }
+  .report-grid{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:50px;
+    align-items:start;
+  }
+  .report-aside h2{font-size:30px; font-weight:700; letter-spacing:-0.4px; line-height:1.2;}
+  .report-aside p{margin-top:14px; color:var(--ink-soft); font-size:15px; max-width:380px;}
+
+  .type-list{margin-top:30px; display:flex; flex-direction:column; gap:10px;}
+  .type-item{
+    display:flex; align-items:center; gap:12px;
+    font-size:14px; color:var(--ink);
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+  }
+  .type-item .ic{
+    width:30px; height:30px; border-radius:8px;
+    background:#fff3d6; display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+  }
+
+  .form-card{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:34px;
+  }
+  .field{margin-bottom:20px;}
+  .field label{
+    display:block; font-size:13px; font-weight:600; color:var(--ink);
+    margin-bottom:8px;
+  }
+  .field-hint{font-size:12px; color:var(--ink-soft); margin-top:6px;}
+
+  select, textarea, input[type="text"]{
+    width:100%;
+    font-family:'Inter';
+    font-size:14.5px;
+    padding:13px 15px;
+    border-radius:var(--radius-sm);
+    border:1px solid var(--line);
+    background:var(--white);
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  select:focus, textarea:focus, input[type="text"]:focus{
+    border-color:var(--blue-mid);
+    box-shadow:0 0 0 4px rgba(31,95,163,0.12);
+  }
+  textarea{resize:vertical; min-height:96px;}
+
+  .loc-row{display:flex; gap:10px;}
+  .loc-row input{flex:1;}
+  .loc-btn{
+    flex-shrink:0;
+    border:1px solid var(--line);
+    background:var(--white);
+    border-radius:var(--radius-sm);
+    padding:0 16px;
+    font-size:13px; font-weight:600; color:var(--blue);
+    cursor:pointer;
+    display:flex; align-items:center; gap:7px;
+  }
+  .loc-btn:hover{background:#f2f6fb;}
+  .loc-status{font-size:12.5px; color:var(--blue-mid); margin-top:8px; display:none;}
+
+  .upload-box{
+    border:1.5px dashed var(--line);
+    border-radius:var(--radius-sm);
+    padding:22px;
+    text-align:center;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    background:var(--white);
+  }
+  .upload-box:hover{border-color:var(--blue-mid); color:var(--blue);}
+
+  .anon-row{
+    display:flex; align-items:center; gap:10px;
+    font-size:13.5px; color:var(--ink-soft);
+    margin-bottom:24px;
+  }
+
+  .submit-wrap .btn-solid{
+    color:var(--blue-deep);
+  }
+
+  .confirm-box{
+    display:none;
+    margin-top:18px;
+    padding:16px 18px;
+    background:#eefaf0;
+    border:1px solid #bfe8c6;
+    border-radius:var(--radius-sm);
+    font-size:13.5px;
+    color:#1e5e2c;
+  }
+
+  /* ---------- Trust / footer band ---------- */
+  .trust{
+    background:linear-gradient(120deg, var(--blue-deep), var(--blue));
+    padding:70px 0;
+  }
+  .trust-grid{
+    display:grid; grid-template-columns:1.1fr 0.9fr; gap:40px; align-items:center;
+  }
+  .trust h2{color:var(--white); font-size:27px; font-weight:700; letter-spacing:-0.3px; line-height:1.3;}
+  .trust p{color:rgba(255,255,255,0.78); margin-top:12px; font-size:14.5px; max-width:440px;}
+  .trust-cta{display:flex; gap:14px; margin-top:24px; flex-wrap:wrap;}
+
+  .partner-strip{
+    display:flex; align-items:center; gap:16px;
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.22);
+    backdrop-filter:blur(10px);
+    border-radius:var(--radius-md);
+    padding:18px 22px;
+  }
+  .partner-strip img{height:30px; width:auto; filter:brightness(0) invert(1);}
+  .partner-strip div{width:1px; height:34px; background:rgba(255,255,255,0.3);}
+  .partner-strip p{color:rgba(255,255,255,0.85); font-size:12.5px; line-height:1.5;}
+
+  footer{
+    background:var(--white);
+    padding:50px 0 34px;
+    border-top:1px solid var(--line);
+  }
+  .foot-grid{
+    display:flex; justify-content:space-between; align-items:flex-start;
+    flex-wrap:wrap; gap:30px;
+    padding-bottom:30px;
+    border-bottom:1px solid var(--line);
+  }
+  .foot-brand{display:flex; align-items:center; gap:12px;}
+  .foot-brand img{height:30px;}
+  .foot-links{display:flex; gap:56px; flex-wrap:wrap;}
+  .foot-col h4{font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:14px; letter-spacing:.2px;}
+  .foot-col a{display:block; font-size:13.5px; color:var(--ink-soft); margin-bottom:10px;}
+  .foot-col a:hover{color:var(--blue);}
+  .foot-bottom{
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:22px; flex-wrap:wrap; gap:10px;
+  }
+  .foot-bottom p{font-size:12.5px; color:var(--ink-soft);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .nav-links{display:none;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:34px;}
+    .hero-visual{order:-1;}
+    .steps-grid{grid-template-columns:1fr;}
+    .report-grid{grid-template-columns:1fr;}
+    .trust-grid{grid-template-columns:1fr;}
+    .section-head h2{font-size:27px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="nav-left">
+      <img src="https://jaboatao.pe.gov.br/images/logo-longa.png" alt="Prefeitura do Jaboatão dos Guararapes">
+      <div class="nav-divider"></div>
+      <div class="brand">Denúncia Verde<span>Meio ambiente · Jaboatão dos Guararapes</span></div>
+    </div>
+    <nav class="nav-links">
+      <a href="#video">Podcast</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#denunciar">Fazer denúncia</a>
+      <a href="#acompanhar">Acompanhar</a>
+    </nav>
+    <div class="nav-cta">
+      <a href="#denunciar" class="btn btn-ghost">Denunciar agora</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-pill"><span class="dot"></span> Canal oficial de denúncias ambientais</div>
+      <h1>Viu um crime ambiental acontecendo? <em>Denuncie em segundos.</em></h1>
+      <p>Descreva o que está acontecendo, envie a localização exata e nossa equipe de fiscalização ambiental toma providências. Rápido, e você pode denunciar sem se identificar.</p>
+      <div class="hero-actions">
+        <a href="#denunciar" class="btn btn-solid">Fazer uma denúncia</a>
+        <a href="#como-funciona" class="btn">Como funciona</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>24h</strong><span>Canal sempre aberto</span></div>
+        <div><strong>100%</strong><span>Denúncia pode ser anônima</span></div>
+        <div><strong>SEMAM</strong><span>Encaminhado à Sec. de Meio Ambiente</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="glass-card">
+        <div class="glass-card-head">
+          <span>NOVA DENÚNCIA</span>
+          <span class="status-chip">Em análise</span>
+        </div>
+        <div class="mock-map"><div class="pin"></div></div>
+        <div class="glass-line w80"></div>
+        <div class="glass-line w60"></div>
+        <div class="glass-line w40"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="video-section" id="video">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">PODCAST</div>
+      <h2>Ouça o podcast sobre o projeto</h2>
+      <p>Assista direto por aqui — sem precisar baixar o arquivo.</p>
+    </div>
+    <div class="video-frame">
+      <iframe
+        src="https://drive.google.com/file/d/1XWMDalp4OVuEuNV9ln_VbGr95TYkPPdg/preview"
+        allow="autoplay"
+        allowfullscreen
+        loading="lazy">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<section class="steps" id="como-funciona">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">COMO FUNCIONA</div>
+      <h2>Três passos entre você e a fiscalização</h2>
+      <p>O processo foi pensado para levar menos de dois minutos, mesmo em movimento.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h3>Descreva a ocorrência</h3>
+        <p>Conte o que está acontecendo: desmatamento, queimada, descarte irregular, poluição de rio ou outro crime ambiental.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Envie a localização</h3>
+        <p>Use sua localização atual ou marque o endereço no mapa para que a equipe encontre o local exato.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h3>Acompanhe o caso</h3>
+        <p>Você recebe um protocolo e pode acompanhar o andamento da apuração pela Secretaria de Meio Ambiente.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="report" id="denunciar">
+  <div class="wrap report-grid">
+    <div class="report-aside">
+      <div class="section-tag">FAZER DENÚNCIA</div>
+      <h2>Conte o que você viu</h2>
+      <p>Quanto mais detalhes, mais rápido a fiscalização consegue agir. Todos os campos com * são obrigatórios.</p>
+
+      <div class="type-list">
+        <div class="type-item"><span class="ic">🌳</span> Desmatamento ou corte irregular</div>
+        <div class="type-item"><span class="ic">🔥</span> Queimada ou incêndio</div>
+        <div class="type-item"><span class="ic">🗑️</span> Descarte irregular de resíduos</div>
+        <div class="type-item"><span class="ic">🌊</span> Poluição de rio, mangue ou praia</div>
+        <div class="type-item"><span class="ic">🐾</span> Maus-tratos à fauna silvestre</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form id="reportForm">
+        <div class="field">
+          <label for="tipo">Tipo de ocorrência *</label>
+          <select id="tipo" required>
+            <option value="">Selecione o tipo</option>
+            <option>Desmatamento ou corte irregular</option>
+            <option>Queimada ou incêndio</option>
+            <option>Descarte irregular de resíduos</option>
+            <option>Poluição de rio, mangue ou praia</option>
+            <option>Maus-tratos à fauna silvestre</option>
+            <option>Outro</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="descricao">O que está acontecendo? *</label>
+          <textarea id="descricao" placeholder="Descreva o que você está vendo: o que, desde quando, quantas pessoas envolvidas, veículos, etc." required></textarea>
+        </div>
+
+        <div class="field">
+          <label for="local">Localização *</label>
+          <div class="loc-row">
+            <input type="text" id="local" placeholder="Endereço, ponto de referência ou bairro" required>
+            <button type="button" class="loc-btn" id="locBtn">📍 Usar local atual</button>
+          </div>
+          <div class="loc-status" id="locStatus"></div>
+        </div>
+
+        <div class="field">
+          <label>Foto ou vídeo (opcional)</label>
+          <div class="upload-box">Toque para anexar uma evidência</div>
+          <div class="field-hint">Aceita imagem ou vídeo curto. Ajuda a equipe a confirmar a ocorrência.</div>
+        </div>
+
+        <div class="anon-row">
+          <input type="checkbox" id="anon">
+          <label for="anon">Quero enviar esta denúncia de forma anônima</label>
+        </div>
+
+        <div class="submit-wrap">
+          <button type="submit" class="btn btn-solid btn-block">Enviar denúncia</button>
+        </div>
+
+        <div class="confirm-box" id="confirmBox">
+          Denúncia registrada. Protocolo <strong id="protoNum"></strong> — você pode usá-lo para acompanhar o caso junto à Secretaria de Meio Ambiente.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="trust" id="acompanhar">
+  <div class="wrap trust-grid">
+    <div>
+      <h2>Sua identidade é protegida em todas as etapas</h2>
+      <p>As denúncias são encaminhadas à Secretaria de Meio Ambiente do Jaboatão dos Guararapes (SEMAM) e à fiscalização municipal. Você pode denunciar de forma anônima a qualquer momento.</p>
+      <div class="trust-cta">
+        <a href="#denunciar" class="btn btn-solid">Fazer uma denúncia</a>
+        <a href="#" class="btn">Falar com a Ouvidoria</a>
+      </div>
+    </div>
+    <div class="partner-strip">
+      <img src="https://jaboatao.pe.gov.br/images/logo-longa.png" alt="Prefeitura de Jaboatão">
+      <div></div>
+      <p>Serviço integrado ao Portal da Prefeitura do Jaboatão dos Guararapes</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="https://jaboatao.pe.gov.br/images/logo-longa.png" alt="Prefeitura do Jaboatão dos Guararapes">
+      </div>
+      <div class="foot-links">
+        <div class="foot-col">
+          <h4>DENÚNCIA VERDE</h4>
+          <a href="#como-funciona">Como funciona</a>
+          <a href="#denunciar">Fazer denúncia</a>
+          <a href="#acompanhar">Acompanhar protocolo</a>
+        </div>
+        <div class="foot-col">
+          <h4>CONTATO</h4>
+          <a href="tel:08000818999">Ouvidoria: 0800 081 8999</a>
+          <a href="#">SEMAM — Meio Ambiente</a>
+        </div>
+        <div class="foot-col">
+          <h4>PREFEITURA</h4>
+          <a href="https://jaboatao.pe.gov.br/">Portal oficial</a>
+          <a href="https://portaldatransparencia.jaboatao.pe.gov.br/">Portal da Transparência</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>Prefeitura do Jaboatão dos Guararapes — Palácio da Batalha, Prazeres, Jaboatão dos Guararapes – PE</p>
+      <p>Protótipo de interface — não envia dados reais</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const locBtn = document.getElementById('locBtn');
+  const locStatus = document.getElementById('locStatus');
+  const localInput = document.getElementById('local');
+
+  locBtn.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+      locStatus.style.display = 'block';
+      locStatus.textContent = 'Geolocalização não disponível neste navegador.';
+      return;
+    }
+    locStatus.style.display = 'block';
+    locStatus.textContent = 'Obtendo sua localização...';
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        localInput.value = `Lat ${latitude.toFixed(5)}, Long ${longitude.toFixed(5)}`;
+        locStatus.textContent = 'Localização atual anexada à denúncia.';
+      },
+      () => {
+        locStatus.textContent = 'Não foi possível obter a localização. Digite o endereço manualmente.';
+      }
+    );
+  });
+
+  const form = document.getElementById('reportForm');
+  const confirmBox = document.getElementById('confirmBox');
+  const protoNum = document.getElementById('protoNum');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = 'JG' + Math.floor(100000 + Math.random() * 900000);
+    protoNum.textContent = id;
+    confirmBox.style.display = 'block';
+    confirmBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+</script>
+
+</body>
+</html>
