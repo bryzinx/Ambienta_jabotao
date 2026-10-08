@@ -7,6 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   :root{
     --white:#ffffff;
@@ -23,6 +25,16 @@
     --radius-md:18px;
     --radius-sm:12px;
   }
+
+  html.high-contrast{
+    --ink:#000000;
+    --ink-soft:#161616;
+    --bg-soft:#ffffff;
+    --line:#000000;
+  }
+  html.high-contrast a{text-decoration:underline;}
+  html.high-contrast .btn{border-width:2px;}
+  html.high-contrast .step-dot span{border-width:3px;}
 
   *{box-sizing:border-box; margin:0; padding:0;}
 
@@ -96,6 +108,9 @@
   .btn-ghost:hover{background:rgba(15,61,115,0.1);}
 
   .btn-block{width:100%;}
+  .btn-sm{padding:12px 22px; font-size:13.5px;}
+
+  button{font-family:inherit;}
 
   /* ---------- Header ---------- */
   header{
@@ -115,16 +130,11 @@
   .brand{font-size:16px; font-weight:700; color:var(--blue-deep); line-height:1.15;}
   .brand span{display:block; font-family:'Inter'; font-weight:500; font-size:11.5px; color:var(--ink-soft); letter-spacing:.3px;}
 
-  .nav-links{display:flex; align-items:center; gap:34px;}
-  .nav-links a{font-size:14.5px; font-weight:500; color:var(--ink-soft);}
+  .nav-links{display:flex; align-items:center; gap:28px;}
+  .nav-links a{font-size:14px; font-weight:500; color:var(--ink-soft);}
   .nav-links a:hover{color:var(--blue);}
 
   .nav-cta{display:flex; align-items:center; gap:10px;}
-  .emergency{
-    font-size:13px; font-weight:600; color:var(--blue-deep);
-    background:#fff3d6; border:1px solid #f3d78a;
-    padding:8px 14px; border-radius:100px;
-  }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -242,16 +252,43 @@
   .section-head h2{font-size:32px; font-weight:700; letter-spacing:-0.4px; line-height:1.22;}
   .section-head p{margin-top:14px; color:var(--ink-soft); font-size:15.5px; max-width:520px;}
 
+  /* ---------- Stats (contador) ---------- */
+  .stats-section{
+    background:linear-gradient(120deg, var(--blue-deep), var(--blue-mid));
+    padding:56px 0;
+  }
+  .stats-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .stat-card{text-align:center;}
+  .stat-num{display:block; font-family:'Sora'; font-weight:800; font-size:38px; color:var(--yolk); line-height:1;}
+  .stat-card span{display:block; margin-top:8px; font-size:13px; color:rgba(255,255,255,0.82);}
+
+  /* ---------- Map (real) ---------- */
+  .map-section{background:var(--white);}
+  #reportMap{
+    height:420px;
+    width:100%;
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:0 20px 50px rgba(10,30,60,0.1);
+  }
+  .map-legend{display:flex; gap:22px; flex-wrap:wrap; margin-top:18px; font-size:13px; color:var(--ink-soft);}
+  .map-legend i{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:7px; vertical-align:middle;}
+
   /* ---------- Video section ---------- */
-  .video-section{background:var(--white);}
+  .video-section{background:var(--bg-soft);}
+  .video-wrap{
+    max-width:800px;
+    margin:0 auto;
+  }
   .video-frame{
     position:relative;
     width:100%;
-    padding-top:56.25%; /* 16:9 */
+    padding-top:56.25%; /* 16:9, mesma proporção do YouTube */
     border-radius:var(--radius-lg);
     overflow:hidden;
     background:var(--blue-deep);
-    box-shadow:0 20px 50px rgba(10,30,60,0.18);
+    box-shadow:0 24px 54px rgba(10,30,60,0.22);
     border:1px solid var(--line);
   }
   .video-frame iframe{
@@ -259,12 +296,17 @@
     width:100%; height:100%;
     border:0;
   }
+  .video-caption{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    margin-top:14px;
+    font-size:12.5px; color:var(--ink-soft); text-align:center;
+  }
 
   /* ---------- Steps (Como funciona) ---------- */
-  .steps{background:var(--bg-soft);}
+  .steps{background:var(--white);}
   .steps-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px;}
   .step-card{
-    background:var(--white);
+    background:var(--bg-soft);
     border:1px solid var(--line);
     border-radius:var(--radius-md);
     padding:30px 26px;
@@ -284,7 +326,7 @@
 
   /* ---------- Report form ---------- */
   .report{
-    background:var(--white);
+    background:var(--bg-soft);
   }
   .report-grid{
     display:grid;
@@ -302,6 +344,7 @@
     padding:12px 14px;
     border:1px solid var(--line);
     border-radius:var(--radius-sm);
+    background:var(--white);
   }
   .type-item .ic{
     width:30px; height:30px; border-radius:8px;
@@ -310,11 +353,29 @@
   }
 
   .form-card{
-    background:var(--bg-soft);
+    background:var(--white);
     border:1px solid var(--line);
     border-radius:var(--radius-lg);
     padding:34px;
   }
+
+  /* Step indicator */
+  .step-indicator{display:flex; align-items:flex-start; margin-bottom:30px;}
+  .step-dot{display:flex; flex-direction:column; align-items:center; gap:6px; font-size:10.5px; color:var(--ink-soft); font-weight:600; letter-spacing:.2px;}
+  .step-dot span{
+    width:30px; height:30px; border-radius:50%;
+    background:var(--white); border:2px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Sora'; font-size:13px; color:var(--ink-soft);
+  }
+  .step-dot.active span{border-color:var(--blue-mid); color:var(--blue-mid); background:#eaf2fb;}
+  .step-dot.active{color:var(--blue);}
+  .step-dot.done span{border-color:var(--yolk-deep); background:var(--yolk-deep); color:var(--white);}
+  .step-line{flex:1; height:2px; background:var(--line); margin:14px 6px 0;}
+
+  .form-step{display:none;}
+  .form-step.active{display:block;}
+
   .field{margin-bottom:20px;}
   .field label{
     display:block; font-size:13px; font-weight:600; color:var(--ink);
@@ -329,7 +390,7 @@
     padding:13px 15px;
     border-radius:var(--radius-sm);
     border:1px solid var(--line);
-    background:var(--white);
+    background:var(--bg-soft);
     color:var(--ink);
     outline:none;
     transition:border-color .15s ease, box-shadow .15s ease;
@@ -363,15 +424,24 @@
     font-size:13.5px;
     color:var(--ink-soft);
     cursor:pointer;
-    background:var(--white);
+    background:var(--bg-soft);
   }
   .upload-box:hover{border-color:var(--blue-mid); color:var(--blue);}
 
   .anon-row{
     display:flex; align-items:center; gap:10px;
     font-size:13.5px; color:var(--ink-soft);
-    margin-bottom:24px;
+    margin-bottom:6px;
   }
+
+  .step-nav{display:flex; justify-content:space-between; align-items:center; margin-top:28px;}
+  .step-nav .btn{padding:13px 24px; font-size:13.5px;}
+  .step-nav span{flex:1;}
+
+  .review-row{display:flex; justify-content:space-between; gap:16px; font-size:13.5px; padding:12px 0; border-top:1px solid var(--line);}
+  .review-row:first-child{border-top:none;}
+  .review-row span{color:var(--ink-soft); flex-shrink:0;}
+  .review-row strong{color:var(--ink); text-align:right; font-weight:600;}
 
   .submit-wrap .btn-solid{
     color:var(--blue-deep);
@@ -387,6 +457,29 @@
     font-size:13.5px;
     color:#1e5e2c;
   }
+
+  /* ---------- Protocol lookup ---------- */
+  .protocol-section{background:var(--white);}
+  .protocol-box{
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:32px;
+    max-width:620px;
+  }
+  .protocol-search{display:flex; gap:10px;}
+  .protocol-search input{flex:1;}
+  .protocol-result{margin-top:20px;}
+  .pr-card{background:var(--white); border:1px solid var(--line); border-radius:var(--radius-sm); padding:20px;}
+  .pr-status{display:inline-block; font-size:11.5px; font-weight:700; padding:5px 13px; border-radius:100px; margin-bottom:12px; letter-spacing:.2px;}
+  .pr-status.analise{background:#fff3d6; color:#8a5b00;}
+  .pr-status.fiscalizacao{background:#e4edfa; color:var(--blue);}
+  .pr-status.resolvido{background:#e4f6e8; color:#1e5e2c;}
+  .pr-row{display:flex; justify-content:space-between; font-size:13.5px; padding:8px 0; border-top:1px solid var(--line);}
+  .pr-row:first-of-type{border-top:none;}
+  .pr-row span{color:var(--ink-soft);}
+  .pr-empty{font-size:13.5px; color:var(--ink-soft); padding:4px 2px;}
+  .protocol-hint{font-size:12.5px; color:var(--ink-soft); margin-top:12px;}
 
   /* ---------- Trust / footer band ---------- */
   .trust{
@@ -435,6 +528,34 @@
   }
   .foot-bottom p{font-size:12.5px; color:var(--ink-soft);}
 
+  /* ---------- Accessibility widget ---------- */
+  .a11y-widget{position:fixed; right:20px; bottom:20px; z-index:90;}
+  .a11y-fab{
+    width:52px; height:52px; border-radius:50%;
+    background:var(--blue-deep); color:var(--white);
+    border:none; font-size:21px; cursor:pointer;
+    box-shadow:0 12px 26px rgba(10,30,60,0.32);
+  }
+  .a11y-panel{
+    display:none;
+    position:absolute; bottom:64px; right:0;
+    background:var(--white); border:1px solid var(--line);
+    border-radius:var(--radius-md); padding:16px; width:208px;
+    box-shadow:0 18px 42px rgba(10,30,60,0.2);
+  }
+  .a11y-panel.open{display:block;}
+  .a11y-panel button, .a11y-libras{
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; padding:11px 12px; border-radius:var(--radius-sm);
+    border:1px solid var(--line); background:var(--bg-soft);
+    font-size:12.5px; font-weight:600; color:var(--ink);
+    cursor:pointer; margin-bottom:10px;
+  }
+  .a11y-font-row{display:flex; gap:8px; margin-bottom:10px;}
+  .a11y-font-row span{font-size:11.5px; color:var(--ink-soft); flex:1; align-self:center;}
+  .a11y-font-row button{flex:none; width:36px; margin-bottom:0;}
+  .a11y-libras{text-decoration:none;}
+
   /* ---------- Responsive ---------- */
   @media (max-width:900px){
     .nav-links{display:none;}
@@ -445,6 +566,9 @@
     .report-grid{grid-template-columns:1fr;}
     .trust-grid{grid-template-columns:1fr;}
     .section-head h2{font-size:27px;}
+    .stats-grid{grid-template-columns:repeat(2,1fr); row-gap:28px;}
+    #reportMap{height:300px;}
+    .step-dot{font-size:9.5px;}
   }
 </style>
 </head>
@@ -458,10 +582,10 @@
       <div class="brand">Denúncia Verde<span>Meio ambiente · Jaboatão dos Guararapes</span></div>
     </div>
     <nav class="nav-links">
-      <a href="#video">Podcast</a>
+      <a href="#mapa">Mapa</a>
       <a href="#como-funciona">Como funciona</a>
       <a href="#denunciar">Fazer denúncia</a>
-      <a href="#acompanhar">Acompanhar</a>
+      <a href="#protocolo">Acompanhar</a>
     </nav>
     <div class="nav-cta">
       <a href="#denunciar" class="btn btn-ghost">Denunciar agora</a>
@@ -501,6 +625,34 @@
   </div>
 </section>
 
+<section class="stats-section">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-card"><strong class="stat-num" data-target="347">0</strong><span>Denúncias recebidas</span></div>
+      <div class="stat-card"><strong class="stat-num" data-target="89" data-suffix="%">0</strong><span>Casos atendidos</span></div>
+      <div class="stat-card"><strong class="stat-num" data-target="18" data-suffix="h">0</strong><span>Tempo médio de resposta</span></div>
+      <div class="stat-card"><strong class="stat-num" data-target="12">0</strong><span>Áreas recuperadas</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="map-section" id="mapa">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">MAPA</div>
+      <h2>Denúncias recentes no mapa</h2>
+      <p>Visualize, de forma anonimizada, onde as últimas ocorrências foram registradas no município.</p>
+    </div>
+    <div id="reportMap"></div>
+    <div class="map-legend">
+      <span><i style="background:#2f8f4e"></i>Desmatamento</span>
+      <span><i style="background:#d64545"></i>Queimada</span>
+      <span><i style="background:#e0a300"></i>Descarte irregular</span>
+      <span><i style="background:#1f5fa3"></i>Poluição hídrica</span>
+    </div>
+  </div>
+</section>
+
 <section class="video-section" id="video">
   <div class="wrap">
     <div class="section-head">
@@ -508,13 +660,16 @@
       <h2>Ouça o podcast sobre o projeto</h2>
       <p>Assista direto por aqui — sem precisar baixar o arquivo.</p>
     </div>
-    <div class="video-frame">
-      <iframe
-        src="https://drive.google.com/file/d/1XWMDalp4OVuEuNV9ln_VbGr95TYkPPdg/preview"
-        allow="autoplay"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
+    <div class="video-wrap">
+      <div class="video-frame">
+        <iframe
+          src="https://drive.google.com/file/d/1XWMDalp4OVuEuNV9ln_VbGr95TYkPPdg/preview"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          loading="lazy">
+        </iframe>
+      </div>
+      <p class="video-caption">Use os controles do player para pausar, voltar ao início ou assistir em tela cheia.</p>
     </div>
   </div>
 </section>
@@ -563,58 +718,109 @@
     </div>
 
     <div class="form-card">
+      <div class="step-indicator">
+        <div class="step-dot active" data-step="1"><span>1</span>Tipo</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="2"><span>2</span>Descrição</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="3"><span>3</span>Local</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="4"><span>4</span>Enviar</div>
+      </div>
+
       <form id="reportForm">
-        <div class="field">
-          <label for="tipo">Tipo de ocorrência *</label>
-          <select id="tipo" required>
-            <option value="">Selecione o tipo</option>
-            <option>Desmatamento ou corte irregular</option>
-            <option>Queimada ou incêndio</option>
-            <option>Descarte irregular de resíduos</option>
-            <option>Poluição de rio, mangue ou praia</option>
-            <option>Maus-tratos à fauna silvestre</option>
-            <option>Outro</option>
-          </select>
-        </div>
 
-        <div class="field">
-          <label for="descricao">O que está acontecendo? *</label>
-          <textarea id="descricao" placeholder="Descreva o que você está vendo: o que, desde quando, quantas pessoas envolvidas, veículos, etc." required></textarea>
-        </div>
-
-        <div class="field">
-          <label for="local">Localização *</label>
-          <div class="loc-row">
-            <input type="text" id="local" placeholder="Endereço, ponto de referência ou bairro" required>
-            <button type="button" class="loc-btn" id="locBtn">📍 Usar local atual</button>
+        <div class="form-step active" data-step="1">
+          <div class="field">
+            <label for="tipo">Tipo de ocorrência *</label>
+            <select id="tipo" required>
+              <option value="">Selecione o tipo</option>
+              <option>Desmatamento ou corte irregular</option>
+              <option>Queimada ou incêndio</option>
+              <option>Descarte irregular de resíduos</option>
+              <option>Poluição de rio, mangue ou praia</option>
+              <option>Maus-tratos à fauna silvestre</option>
+              <option>Outro</option>
+            </select>
           </div>
-          <div class="loc-status" id="locStatus"></div>
+          <div class="step-nav">
+            <span></span>
+            <button type="button" class="btn btn-solid step-next">Continuar</button>
+          </div>
         </div>
 
-        <div class="field">
-          <label>Foto ou vídeo (opcional)</label>
-          <div class="upload-box">Toque para anexar uma evidência</div>
-          <div class="field-hint">Aceita imagem ou vídeo curto. Ajuda a equipe a confirmar a ocorrência.</div>
+        <div class="form-step" data-step="2">
+          <div class="field">
+            <label for="descricao">O que está acontecendo? *</label>
+            <textarea id="descricao" placeholder="Descreva o que você está vendo: o que, desde quando, quantas pessoas envolvidas, veículos, etc." required></textarea>
+          </div>
+          <div class="field">
+            <label>Foto ou vídeo (opcional)</label>
+            <div class="upload-box">Toque para anexar uma evidência</div>
+            <div class="field-hint">Aceita imagem ou vídeo curto. Ajuda a equipe a confirmar a ocorrência.</div>
+          </div>
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost step-back">Voltar</button>
+            <button type="button" class="btn btn-solid step-next">Continuar</button>
+          </div>
         </div>
 
-        <div class="anon-row">
-          <input type="checkbox" id="anon">
-          <label for="anon">Quero enviar esta denúncia de forma anônima</label>
+        <div class="form-step" data-step="3">
+          <div class="field">
+            <label for="local">Localização *</label>
+            <div class="loc-row">
+              <input type="text" id="local" placeholder="Endereço, ponto de referência ou bairro" required>
+              <button type="button" class="loc-btn" id="locBtn">📍 Usar local atual</button>
+            </div>
+            <div class="loc-status" id="locStatus"></div>
+          </div>
+          <div class="anon-row">
+            <input type="checkbox" id="anon">
+            <label for="anon">Quero enviar esta denúncia de forma anônima</label>
+          </div>
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost step-back">Voltar</button>
+            <button type="button" class="btn btn-solid step-next">Revisar</button>
+          </div>
         </div>
 
-        <div class="submit-wrap">
-          <button type="submit" class="btn btn-solid btn-block">Enviar denúncia</button>
+        <div class="form-step" data-step="4">
+          <div id="reviewBox"></div>
+          <div class="step-nav">
+            <button type="button" class="btn btn-ghost step-back">Voltar</button>
+            <button type="submit" class="btn btn-solid">Enviar denúncia</button>
+          </div>
         </div>
 
         <div class="confirm-box" id="confirmBox">
-          Denúncia registrada. Protocolo <strong id="protoNum"></strong> — você pode usá-lo para acompanhar o caso junto à Secretaria de Meio Ambiente.
+          Denúncia registrada. Protocolo <strong id="protoNum"></strong> — você pode usá-lo na seção "Acompanhar" para ver o andamento do caso.
         </div>
       </form>
     </div>
   </div>
 </section>
 
-<section class="trust" id="acompanhar">
+<section class="protocol-section" id="protocolo">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-tag">ACOMPANHAR</div>
+      <h2>Consulte o andamento da sua denúncia</h2>
+      <p>Digite o número de protocolo recebido para ver o status atual.</p>
+    </div>
+    <div class="protocol-box">
+      <div class="protocol-search">
+        <input type="text" id="protoSearch" placeholder="Ex: JG482913">
+        <button type="button" class="btn btn-solid btn-sm" id="protoSearchBtn">Buscar</button>
+      </div>
+      <div class="protocol-result" id="protoResult">
+        <p class="pr-empty">Digite um protocolo para ver o status. Experimente JG482913, JG551207 ou JG390144.</p>
+      </div>
+      <p class="protocol-hint">O protocolo é gerado automaticamente ao enviar uma denúncia nesta página.</p>
+    </div>
+  </div>
+</section>
+
+<section class="trust">
   <div class="wrap trust-grid">
     <div>
       <h2>Sua identidade é protegida em todas as etapas</h2>
@@ -641,9 +847,10 @@
       <div class="foot-links">
         <div class="foot-col">
           <h4>DENÚNCIA VERDE</h4>
+          <a href="#mapa">Mapa de denúncias</a>
           <a href="#como-funciona">Como funciona</a>
           <a href="#denunciar">Fazer denúncia</a>
-          <a href="#acompanhar">Acompanhar protocolo</a>
+          <a href="#protocolo">Acompanhar protocolo</a>
         </div>
         <div class="foot-col">
           <h4>CONTATO</h4>
@@ -664,7 +871,108 @@
   </div>
 </footer>
 
+<div class="a11y-widget">
+  <button class="a11y-fab" id="a11yFab" aria-label="Opções de acessibilidade">♿</button>
+  <div class="a11y-panel" id="a11yPanel">
+    <button type="button" id="contrastToggle">◐ Alto contraste</button>
+    <div class="a11y-font-row">
+      <span>Tamanho da fonte</span>
+      <button type="button" id="fontMinus">A-</button>
+      <button type="button" id="fontPlus">A+</button>
+    </div>
+    <a href="https://jaboatao.pe.gov.br/acessibilidade" target="_blank" rel="noopener" class="a11y-libras">🤟 Libras</a>
+  </div>
+</div>
+
 <script>
+  /* ---------- Contador de estatísticas ---------- */
+  const statNums = document.querySelectorAll('.stat-num');
+  const animateStat = (el) => {
+    const target = parseInt(el.dataset.target, 10);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1200;
+    const start = performance.now();
+    const tick = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const value = Math.floor(progress * target);
+      el.textContent = value + suffix;
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateStat(entry.target);
+        statObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  statNums.forEach(el => statObserver.observe(el));
+
+  /* ---------- Mapa real (Leaflet) ---------- */
+  const reportPins = [
+    { lat: -8.1766, lng: -34.9430, tipo: 'Queimada', cor: '#d64545', desc: 'Foco de queimada próximo à mata de Candeias.', proto: 'JG482913' },
+    { lat: -8.1766, lng: -34.9372, tipo: 'Poluição hídrica', cor: '#1f5fa3', desc: 'Descarte de efluentes no rio Jaboatão, Barra de Jangada.', proto: 'JG551207' },
+    { lat: -8.0870, lng: -34.9850, tipo: 'Desmatamento', cor: '#2f8f4e', desc: 'Corte irregular de vegetação nativa em Curado.', proto: 'JG390144' },
+    { lat: -8.1517, lng: -35.0066, tipo: 'Descarte irregular', cor: '#e0a300', desc: 'Descarte de entulho em terreno baldio, Prazeres.', proto: 'JG204488' }
+  ];
+
+  const map = L.map('reportMap', { scrollWheelZoom: false }).setView([-8.1300, -34.9900], 11);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors',
+    maxZoom: 18
+  }).addTo(map);
+
+  reportPins.forEach(r => {
+    const marker = L.circleMarker([r.lat, r.lng], {
+      radius: 9, color: '#ffffff', weight: 2, fillColor: r.cor, fillOpacity: 0.95
+    }).addTo(map);
+    marker.bindPopup(`<strong>${r.tipo}</strong><br>${r.desc}<br><small>Protocolo ${r.proto}</small>`);
+  });
+
+  /* ---------- Formulário em etapas ---------- */
+  const steps = document.querySelectorAll('.form-step');
+  const dots = document.querySelectorAll('.step-dot');
+  let currentStep = 1;
+
+  function goToStep(n) {
+    steps.forEach(s => s.classList.toggle('active', Number(s.dataset.step) === n));
+    dots.forEach(d => {
+      const ds = Number(d.dataset.step);
+      d.classList.toggle('active', ds === n);
+      d.classList.toggle('done', ds < n);
+    });
+    currentStep = n;
+    if (n === 4) buildReview();
+    document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  document.querySelectorAll('.step-next').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const stepEl = btn.closest('.form-step');
+      const inputs = stepEl.querySelectorAll('[required]');
+      for (const inp of inputs) {
+        if (!inp.value) { inp.reportValidity(); return; }
+      }
+      goToStep(currentStep + 1);
+    });
+  });
+
+  document.querySelectorAll('.step-back').forEach(btn => {
+    btn.addEventListener('click', () => goToStep(currentStep - 1));
+  });
+
+  function buildReview() {
+    document.getElementById('reviewBox').innerHTML = `
+      <div class="review-row"><span>Tipo</span><strong>${tipo.value || '—'}</strong></div>
+      <div class="review-row"><span>Descrição</span><strong>${(descricao.value || '—').slice(0, 80)}</strong></div>
+      <div class="review-row"><span>Local</span><strong>${local.value || '—'}</strong></div>
+      <div class="review-row"><span>Anônima</span><strong>${anon.checked ? 'Sim' : 'Não'}</strong></div>
+    `;
+  }
+
+  /* ---------- Localização atual ---------- */
   const locBtn = document.getElementById('locBtn');
   const locStatus = document.getElementById('locStatus');
   const localInput = document.getElementById('local');
@@ -689,6 +997,13 @@
     );
   });
 
+  /* ---------- Envio + protocolos ---------- */
+  const protocolStore = {
+    JG482913: { status: 'Resolvido', tipo: 'Queimada', local: 'Candeias', data: '28/09/2026' },
+    JG551207: { status: 'Em análise', tipo: 'Poluição hídrica', local: 'Barra de Jangada', data: '03/10/2026' },
+    JG390144: { status: 'Em fiscalização', tipo: 'Desmatamento', local: 'Curado', data: '30/09/2026' }
+  };
+
   const form = document.getElementById('reportForm');
   const confirmBox = document.getElementById('confirmBox');
   const protoNum = document.getElementById('protoNum');
@@ -696,9 +1011,67 @@
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const id = 'JG' + Math.floor(100000 + Math.random() * 900000);
+    protocolStore[id] = {
+      status: 'Em análise',
+      tipo: tipo.value || 'Não informado',
+      local: local.value || 'Não informado',
+      data: new Date().toLocaleDateString('pt-BR')
+    };
     protoNum.textContent = id;
     confirmBox.style.display = 'block';
     confirmBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
+
+  /* ---------- Busca de protocolo ---------- */
+  const protoSearchBtn = document.getElementById('protoSearchBtn');
+  const protoSearchInput = document.getElementById('protoSearch');
+  const protoResult = document.getElementById('protoResult');
+
+  const statusClassMap = {
+    'Resolvido': 'resolvido',
+    'Em análise': 'analise',
+    'Em fiscalização': 'fiscalizacao'
+  };
+
+  protoSearchBtn.addEventListener('click', () => {
+    const val = protoSearchInput.value.trim().toUpperCase();
+    const data = protocolStore[val];
+    if (!data) {
+      protoResult.innerHTML = `<p class="pr-empty">Nenhuma denúncia encontrada com esse protocolo. Confira o número e tente novamente.</p>`;
+      return;
+    }
+    const statusClass = statusClassMap[data.status] || 'analise';
+    protoResult.innerHTML = `
+      <div class="pr-card">
+        <span class="pr-status ${statusClass}">${data.status}</span>
+        <div class="pr-row"><span>Protocolo</span><strong>${val}</strong></div>
+        <div class="pr-row"><span>Tipo</span><strong>${data.tipo}</strong></div>
+        <div class="pr-row"><span>Local</span><strong>${data.local}</strong></div>
+        <div class="pr-row"><span>Registrado em</span><strong>${data.data}</strong></div>
+      </div>`;
+  });
+
+  protoSearchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') protoSearchBtn.click();
+  });
+
+  /* ---------- Acessibilidade ---------- */
+  const a11yFab = document.getElementById('a11yFab');
+  const a11yPanel = document.getElementById('a11yPanel');
+  a11yFab.addEventListener('click', () => a11yPanel.classList.toggle('open'));
+
+  document.getElementById('contrastToggle').addEventListener('click', () => {
+    document.documentElement.classList.toggle('high-contrast');
+  });
+
+  let zoomLevel = 100;
+  document.getElementById('fontPlus').addEventListener('click', () => {
+    zoomLevel = Math.min(150, zoomLevel + 10);
+    document.body.style.zoom = zoomLevel + '%';
+  });
+  document.getElementById('fontMinus').addEventListener('click', () => {
+    zoomLevel = Math.max(90, zoomLevel - 10);
+    document.body.style.zoom = zoomLevel + '%';
   });
 </script>
 
